@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="PhpInterpreters">
-    <interpreters>
-      <interpreter home="php" id="7cb3cd21-a9c3-44ef-8efd-8795e8b625cf" name="Interpreter for Composer" debugger_id="php.debugger.XDebug" />
-    </interpreters>
-  </component>
-</project>
