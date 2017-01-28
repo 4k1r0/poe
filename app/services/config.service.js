@@ -8,18 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
+/**
+ * Created by matthieu on 28/01/2017.
+ */
+var core_1 = require("@angular/core");
+var ConfigService = (function () {
+    function ConfigService() {
+        this.publicStashTagUrl = 'http://www.pathofexile.com/api/public-stash-tabs';
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            templateUrl: '/app/core/app.component.html',
-        }), 
+    ConfigService = __decorate([
+        core_1.Injectable(), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], ConfigService);
+    return ConfigService;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ConfigService = ConfigService;
+//# sourceMappingURL=config.service.js.map

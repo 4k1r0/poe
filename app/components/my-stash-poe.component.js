@@ -8,18 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+/**
+ * Created by matthieu on 28/01/2017.
+ */
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
+var poe_api_service_1 = require("../services/poe-api.service");
+var MyStashPoeComponent = (function () {
+    function MyStashPoeComponent(poeApiService) {
+        this.poeApiService = poeApiService;
     }
-    AppComponent = __decorate([
+    MyStashPoeComponent.prototype.onClick = function () {
+        console.log('onclick');
+        this.poeApiService.crawl();
+    };
+    MyStashPoeComponent = __decorate([
         core_1.Component({
-            selector: 'my-app',
-            templateUrl: '/app/core/app.component.html',
+            selector: 'my-stash-poe',
+            templateUrl: 'app/components/my-stash-poe.component.html'
         }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+        __metadata('design:paramtypes', [poe_api_service_1.PoeApiService])
+    ], MyStashPoeComponent);
+    return MyStashPoeComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.MyStashPoeComponent = MyStashPoeComponent;
+//# sourceMappingURL=my-stash-poe.component.js.map
