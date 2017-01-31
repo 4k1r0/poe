@@ -39,7 +39,7 @@ var PoeApiService = (function () {
         };
     }
     PoeApiService.prototype.crawl = function () {
-        this.http.get(this.config.publicStashTagUrl)
+        this.http.get('api/get')
             .toPromise()
             .then(function (response) {
             console.log(response);

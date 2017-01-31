@@ -5,8 +5,9 @@ import {Component} from '@angular/core';
 import {PoeApiService} from "../services/poe-api.service";
 
 @Component({
+    moduleId: module.id,
     selector: 'my-stash-poe',
-    templateUrl: 'app/components/my-stash-poe.component.html'
+    templateUrl: './my-stash-poe.component.html'
 })
 export class MyStashPoeComponent {
 

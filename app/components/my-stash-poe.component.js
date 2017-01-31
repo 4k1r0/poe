@@ -23,8 +23,9 @@ var MyStashPoeComponent = (function () {
     };
     MyStashPoeComponent = __decorate([
         core_1.Component({
+            moduleId: module.id,
             selector: 'my-stash-poe',
-            templateUrl: 'app/components/my-stash-poe.component.html'
+            templateUrl: './my-stash-poe.component.html'
         }), 
         __metadata('design:paramtypes', [poe_api_service_1.PoeApiService])
     ], MyStashPoeComponent);

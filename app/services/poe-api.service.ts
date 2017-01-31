@@ -15,7 +15,7 @@ export class PoeApiService {
     }
 
     crawl() {
-        this.http.get(this.config.publicStashTagUrl)
+        this.http.get('api/get')
             .toPromise()
             .then(response => {
                 console.log(response);
