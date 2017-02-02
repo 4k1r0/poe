@@ -25,6 +25,8 @@ function getStash( $account, $id = 0, &$count = 1 )
     $nextId = $oData->next_change_id;
     unset($oData);
     
+    
+    
     if( !empty($nextId) && $count < 10 ){
         echo 'page suivante<br/>';
         sleep(1);
