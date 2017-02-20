@@ -26,7 +26,7 @@ try {
 catch ( Exception $e ) {
     echo $e->getMessage();
 }
-echo '<pre>';
+
 crawl($manager);
 
 function crawl( EntityManager $noe4jManager, $id = 0, &$count = 1 )
@@ -35,11 +35,19 @@ function crawl( EntityManager $noe4jManager, $id = 0, &$count = 1 )
     $oData = json_decode(file_get_contents("http://poe/api/test.json?id=" . $id));
     
     $count = 0;
-    while ( $count < 20 && isset($oData->stashes[ $count ]) ) {
+    while ( $count < 20 && isset($oData->stashes[ $count ]) ) { // max ~80
         
         $oStash = POE\Stash::create()->hydrateFromObject($oData->stashes[ $count ]);
         
         $noe4jManager->persist($oStash);
+        
+        try {
+            $noe4jManager->flush();
+        }
+        catch ( Exception $e ) {
+            echo $e->getMessage();
+        }
+        $noe4jManager->clear();
         ++$count;
     }
     //$nci = POE\NextChangeId::create()->hydrateFromObject($oData);
@@ -49,13 +57,6 @@ function crawl( EntityManager $noe4jManager, $id = 0, &$count = 1 )
     
     //$noe4jManager->persist($nci);
     
-        try {
-            $noe4jManager->flush();
-            echo 'done';
-        }
-        catch ( Exception $e ) {
-            echo $e->getMessage();
-        }
 }
 
 /*
