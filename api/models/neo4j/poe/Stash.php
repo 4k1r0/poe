@@ -14,7 +14,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * @OGM\Node(label="Stash")
  */
-class Stash
+class Stash extends PoeApiObject
 {
     /**
      * @OGM\GraphId()
@@ -26,37 +26,43 @@ class Stash
      * @OGM\Property(type="string")
      * @var string
      */
-    protected $accountName;
+    public $accountName;
     
      /**
      * @OGM\Property(type="string")
      * @var string
      */
-    protected $lastCharacterName;
+    public $lastCharacterName;
     
      /**
      * @OGM\Property(type="string")
      * @var string
      */
-    protected $uid;
+    public $uid;
     
      /**
      * @OGM\Property(type="string")
      * @var string
      */
-    protected $stash;
+    public $stash;
     
      /**
      * @OGM\Property(type="string")
      * @var string
      */
-    protected $stashType;
+    public $stashType;
     
     /**
-     * @OGM\Property(type="boolean")
-     * @var boolean
+     * @OGM\Property(type="string")
+     * @var string
      */
-    protected $public;
+    public $public;
+    
+    /**
+     * @OGM\Relationship(type="CONTAIN_IN", direction="OUTGOING", targetEntity="Item", collection=true)
+     * @var ArrayCollection|Item[]
+     */
+    public $items;
     
     /**
      * Stash constructor.
@@ -68,14 +74,9 @@ class Stash
      * @param string $stashType
      * @param bool   $public
      */
-    public function __construct( $accountName, $lastCharacterName, $uid, $stash, $stashType, $public )
+    public function __construct()
     {
-        $this->accountName = $accountName;
-        $this->lastCharacterName = $lastCharacterName;
-        $this->uid = $uid;
-        $this->stash = $stash;
-        $this->stashType = $stashType;
-        $this->public = $public;
+        $this->items = new ArrayCollection();
     }
     
     /**
@@ -86,100 +87,25 @@ class Stash
         return $this->id;
     }
     
-    
     /**
-     * @return string
+     * @param \POE\Item $item
      */
-    public function getAccountName()
+    public function addItem(Item $item)
     {
-        return $this->accountName;
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+        }
+        return $this;
     }
     
     /**
-     * @param string $accountName
+     * @param \POE\Item $item
      */
-    public function setAccountName( $accountName )
+    public function removeStash(Item $item)
     {
-        $this->accountName = $accountName;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getLastCharacterName()
-    {
-        return $this->lastCharacterName;
-    }
-    
-    /**
-     * @param string $lastCharacterName
-     */
-    public function setLastCharacterName( $lastCharacterName )
-    {
-        $this->lastCharacterName = $lastCharacterName;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getUid()
-    {
-        return $this->uid;
-    }
-    
-    /**
-     * @param string $uid
-     */
-    public function setUid( $uid )
-    {
-        $this->uid = $uid;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getStash()
-    {
-        return $this->stash;
-    }
-    
-    /**
-     * @param string $stash
-     */
-    public function setStash( $stash )
-    {
-        $this->stash = $stash;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getStashType()
-    {
-        return $this->stashType;
-    }
-    
-    /**
-     * @param string $stashType
-     */
-    public function setStashType( $stashType )
-    {
-        $this->stashType = $stashType;
-    }
-    
-    /**
-     * @return bool
-     */
-    public function isPublic()
-    {
-        return $this->public;
-    }
-    
-    /**
-     * @param bool $public
-     */
-    public function setPublic( $public )
-    {
-        $this->public = $public;
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+        }
+        return $this;
     }
 }

@@ -6,20 +6,59 @@
  * Time: 02:14
  */
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/models/Neo4j/poe/PoeApiObject.php';
 require_once __DIR__ . '/models/Neo4j/poe/NextChangeId.php';
 require_once __DIR__ . '/models/Neo4j/poe/Stash.php';
+require_once __DIR__ . '/models/Neo4j/poe/Item.php';
+require_once __DIR__ . '/models/Neo4j/poe/Property.php';
 
 use GraphAware\Neo4j\OGM\EntityManager;
 use POE\NextChangeId;
-use POE\Stash;
 
 $manager = EntityManager::create('http://neo4j:matthieu@localhost:7474');
 
-$nextChangeIdRepository = $manager->getRepository(NextChangeId::class);
+try {
+    $nextChangeIdRepository = $manager->getRepository(NextChangeId::class);
+    
+    $nci = $nextChangeIdRepository->findBy('next_change_id', '4444-4444-4444-4444-4444');
+    var_dump($nci);
+}
+catch ( Exception $e ) {
+    echo $e->getMessage();
+}
+echo '<pre>';
+crawl($manager);
 
-$nci = $nextChangeIdRepository->findOneBy('next_change_id', '2300-4136-3306-4292-1278');
-var_dump($nci);
+function crawl( EntityManager $noe4jManager, $id = 0, &$count = 1 )
+{
+    //$oData = json_decode(file_get_contents("http://api.pathofexile.com/public-stash-tabs?id=" . $id));
+    $oData = json_decode(file_get_contents("http://poe/api/test.json?id=" . $id));
+    
+    $count = 0;
+    while ( $count < 20 && isset($oData->stashes[ $count ]) ) {
+        
+        $oStash = POE\Stash::create()->hydrateFromObject($oData->stashes[ $count ]);
+        
+        $noe4jManager->persist($oStash);
+        ++$count;
+    }
+    //$nci = POE\NextChangeId::create()->hydrateFromObject($oData);
+    
+    //echo '<pre>';
+    //print_r($nci);
+    
+    //$noe4jManager->persist($nci);
+    
+        try {
+            $noe4jManager->flush();
+            echo 'done';
+        }
+        catch ( Exception $e ) {
+            echo $e->getMessage();
+        }
+}
 
+/*
 $s1 = new Stash(
     '4k1r0',
     'superWitch',
@@ -44,3 +83,4 @@ $nci->addStash($s1);
 $nci->addStash($s2);
 $manager->persist($nci);
 $manager->flush();
+*/

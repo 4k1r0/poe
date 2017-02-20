@@ -14,7 +14,7 @@ use GraphAware\Neo4j\OGM\Annotations as OGM;
 /**
  * @OGM\Node(label="NextChangeId")
  */
-class NextChangeId
+class NextChangeId extends PoeApiObject
 {
     /**
      * @OGM\GraphId()
@@ -26,78 +26,35 @@ class NextChangeId
      * @OGM\Property(type="string")
      * @var string
      */
-    protected $next_change_id;
+    public $next_change_id;
     
     /**
      * @OGM\Property(type="int")
      * @var int
      */
-    protected $page;
+    public $page;
     
     /**
-     * @OGM\Relationship(type="CONTAIN_IN", direction="OUTGOING", targetEntity="Stash", collection=true)
+     * @OGM\Relationship(type="REFERENCE_IN", direction="OUTGOING", targetEntity="Stash", collection=true)
      * @var ArrayCollection|Stash[]
      */
-    protected $stashes;
+    public $stashes;
     
     /**
      * @param string $next_change_id
      * @param int $page
      */
-    public function __construct($next_change_id, $page = 0)
+    public function __construct()
     {
-        $this->next_change_id = $next_change_id;
-        $this->page = $page;
         $this->stashes = new ArrayCollection();
     }
     
-    // Getters and Setters
     /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNextCHangeId()
-    {
-        return $this->next_change_id;
-    }
-    
-    /**
-     * @return int
-     */
-    public function getPage()
-    {
-        return $this->page;
-    }
-    
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection|Stash[]
-     */
-    public function getStashes()
-    {
-        return $this->stashes;
-    }
-    
-    /**
-     * @param string $next_change_id
-     */
-    public function setNextChangeId($next_change_id)
-    {
-        $this->next_change_id = $next_change_id;
-    }
-    
-    /**
-     * @param int $next_change_id
-     */
-    public function setPage($page)
-    {
-        $this->page = $page;
     }
     
     /**
@@ -108,6 +65,7 @@ class NextChangeId
         if (!$this->stashes->contains($stash)) {
             $this->stashes->add($stash);
         }
+        return $this;
     }
     
     /**
@@ -118,5 +76,6 @@ class NextChangeId
         if ($this->stashes->contains($stash)) {
             $this->stashes->removeElement($stash);
         }
+        return $this;
     }
 }
